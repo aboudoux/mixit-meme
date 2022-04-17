@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32228.430
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MixitMeme.Tests", "MixitMeme.Tests\MixitMeme.Tests.csproj", "{D229E30A-1E70-40D4-84E2-DBF41BC816F3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MixitMeme.Web", "MixitMeme.Web\MixitMeme.Web.csproj", "{0037178E-1D29-43B0-AB6C-1D3FBECF1E79}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D229E30A-1E70-40D4-84E2-DBF41BC816F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D229E30A-1E70-40D4-84E2-DBF41BC816F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D229E30A-1E70-40D4-84E2-DBF41BC816F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D229E30A-1E70-40D4-84E2-DBF41BC816F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0037178E-1D29-43B0-AB6C-1D3FBECF1E79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0037178E-1D29-43B0-AB6C-1D3FBECF1E79}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0037178E-1D29-43B0-AB6C-1D3FBECF1E79}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0037178E-1D29-43B0-AB6C-1D3FBECF1E79}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2AFE1633-837A-46CD-8282-FE32AB59A2F8}
+	EndGlobalSection
+EndGlobal
