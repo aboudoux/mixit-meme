@@ -1,9 +1,42 @@
 ﻿@page "/"
+@using MixitMeme.Web.Store.AddMemes
+@using MixitMeme.Web.Infrastructure
+@inherits BlazorState.BlazorStateComponent;
 
-<PageTitle>Index</PageTitle>
 
-<h1>Hello, world!</h1>
+<PageTitle>Welcome to MEME-MIXIT 2022 !!</PageTitle>
 
-Welcome to your new app.
+@if (State.DialogVisible)
+{
+    <Modal Title="Apporte ta pierre" OnCancel="CloseAddMeme" OnOk="CreateMeme">
+        <SvgIcon>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M21 15v3h3v2h-3v3h-2v-3h-3v-2h3v-3h2zm.008-12c.548 0 .992.445.992.993V13h-2V5H4v13.999L14 9l3 3v2.829l-3-3L6.827 19H14v2H2.992A.993.993 0 0 1 2 20.007V3.993A1 1 0 0 1 2.992 3h18.016zM8 7a2 2 0 1 1 0 4 2 2 0 0 1 0-4z"/></svg>
+        </SvgIcon>
+        <ChildContent>
+            <div class="mb-2">
+                <Animation Effect="@Effect.ShakeX" Speed="@Speed.Faster" Enabled="@State.UrlInvalid" OnAnimationEnd="ResetInvalid">
+                    <Input Placeholder="URL vers le meme" Focus="true" @bind-Value="State.Url"></Input>
+                </Animation>
+            </div>
+            <Animation Effect="@Effect.ShakeX" Speed="@Speed.Faster" Enabled="@State.AuthorInvalid" OnAnimationEnd="ResetInvalid">
+                <Input Placeholder="Auteur" @bind-Value="State.Author"></Input>
+            </Animation>
+        </ChildContent>
+    </Modal>
+}
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+<Header OnAddMemeClick="AddMeme" />
+<MemeViewer></MemeViewer>
+
+@code
+{
+    private AddMemeState State => GetState<AddMemeState>();
+
+    public void AddMeme() => Mediator.Send(new AddMemeState.ShowDialog(true));
+
+    public void CloseAddMeme() => Mediator.Send(new AddMemeState.ShowDialog(false));
+
+    public void CreateMeme() => Mediator.Send(new AddMemeState.AddMeme(new MemeUrl(State.Url), new MemeAuthor(State.Author)));
+
+    public void ResetInvalid() => Mediator.Send(new AddMemeState.ResetInvalid());
+}

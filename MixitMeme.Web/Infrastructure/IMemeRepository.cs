@@ -1,9 +1,7 @@
-﻿using MixitMeme.Infra;
+﻿namespace MixitMeme.Web.Infrastructure;
 
-namespace MixitMeme.Web.Infrastructure {
-	public interface IMemeRepository
-	{
-		public int Add(string url, string author);
-		public MemeData[] All();
-	}
+public interface IMemeRepository
+{
+	public int Add(MemeUrl url, MemeAuthor author);
+	public MemeData[] All();
 }

@@ -1,13 +1,19 @@
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
-using MixitMeme.Web.Data;
+using System.Reflection;
+using BlazorState;
+using MixitMeme.Web.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddSingleton<WeatherForecastService>();
+builder.Services.AddBlazorState(options => {
+	options.UseCloneStateBehavior = false;
+	options.Assemblies = new[] { Assembly.GetExecutingAssembly() };
+});
+
+builder.Services.AddSingleton<IMemeRepository>(new MemeRepository(new DatabaseDirectory(builder.Configuration["DatabaseDirectory"])));
+builder.Services.AddTransient<IMemeChecker, MemeChecker>();
 
 var app = builder.Build();
 

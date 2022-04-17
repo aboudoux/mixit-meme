@@ -1,5 +1,4 @@
-﻿using MixitMeme.Infra;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace MixitMeme.Web.Infrastructure;
 
@@ -33,10 +32,10 @@ public class MemeRepository : IMemeRepository
 
 		_lastId = _data.Max(a => a.Id);
 	}
-	public int Add(string url, string author)
+	public int Add(MemeUrl url, MemeAuthor author)
 	{
 		var id = GetId();
-		var data = new MemeData(id, url, author);
+		var data = new MemeData(id, url.Value, author.Value);
 		File.WriteAllText(Path.Combine(_databaseDirectory.Value, id + ".json"), JsonConvert.SerializeObject(data));
 		_data.Add(data);
 		return id;

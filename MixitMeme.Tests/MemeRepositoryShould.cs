@@ -3,7 +3,6 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
-using MixitMeme.Infra;
 using MixitMeme.Web.Infrastructure;
 using MS.Tests.Assets;
 using Newtonsoft.Json;
@@ -20,7 +19,7 @@ public class MemeRepositoryShould
 	{
 		using TestDirectory directory = TestDirectory.Create("database");
 		MemeRepository repository = new(new DatabaseDirectory(directory.DirectoryPath));
-		var id = repository.Add("https://community.hackyourjob.org/uploads/default/original/1X/eff9694537c0fc1d2333551d2b29131ec3b91b32.jpeg", "test");
+		var id = repository.Add(new MemeUrl("https://community.hackyourjob.org/uploads/default/original/1X/eff9694537c0fc1d2333551d2b29131ec3b91b32.jpeg"), new MemeAuthor("test"));
 
 		id.Should().Be(1);
 		File.Exists(Path.Combine(directory.DirectoryPath, "1.json")).Should().BeTrue();
@@ -36,10 +35,10 @@ public class MemeRepositoryShould
 	{
 		using TestDirectory directory = TestDirectory.Create("database");
 		MemeRepository repository = new(new DatabaseDirectory(directory.DirectoryPath));
-		repository.Add("https://community.hackyourjob.org/uploads/default/original/1X/eff9694537c0fc1d2333551d2b29131ec3b91b32.jpeg", "test");
-		repository.Add("https://community.hackyourjob.org/uploads/default/original/1X/eff9694537c0fc1d2333551d2b29131ec3b91b32.jpeg", "test");
-		repository.Add("https://community.hackyourjob.org/uploads/default/original/1X/eff9694537c0fc1d2333551d2b29131ec3b91b32.jpeg", "test");
-		var id = repository.Add("https://community.hackyourjob.org/uploads/default/original/1X/eff9694537c0fc1d2333551d2b29131ec3b91b32.jpeg", "test");
+		repository.Add(new MemeUrl("https://community.hackyourjob.org/uploads/default/original/1X/eff9694537c0fc1d2333551d2b29131ec3b91b32.jpeg"), new MemeAuthor("test"));
+		repository.Add(new MemeUrl("https://community.hackyourjob.org/uploads/default/original/1X/eff9694537c0fc1d2333551d2b29131ec3b91b32.jpeg"), new MemeAuthor("test"));
+		repository.Add(new MemeUrl("https://community.hackyourjob.org/uploads/default/original/1X/eff9694537c0fc1d2333551d2b29131ec3b91b32.jpeg"), new MemeAuthor("test"));
+		var id = repository.Add(new MemeUrl("https://community.hackyourjob.org/uploads/default/original/1X/eff9694537c0fc1d2333551d2b29131ec3b91b32.jpeg"), new MemeAuthor("test"));
 
 		id.Should().Be(4);
 		Directory.GetFiles(directory.DirectoryPath, "*.json").Should().HaveCount(4);
@@ -71,7 +70,7 @@ public class MemeRepositoryShould
 		repository.All().Should().HaveCount(10);
 		repository.All().Max(a => a.Id).Should().Be(10);
 
-		repository.Add("https://community.hackyourjob.org/uploads/default/original/1X/eff9694537c0fc1d2333551d2b29131ec3b91b32.jpeg", "test");
+		repository.Add(new MemeUrl("https://community.hackyourjob.org/uploads/default/original/1X/eff9694537c0fc1d2333551d2b29131ec3b91b32.jpeg"), new MemeAuthor("test"));
 		repository.All().Should().HaveCount(11);
 		repository.All().Max(a => a.Id).Should().Be(11);
 	}

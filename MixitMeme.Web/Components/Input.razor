@@ -1,0 +1,97 @@
+﻿<input @ref="inputText" @onkeydown="Enter" @bind-value="@InputValue" @bind-value:event="@ChangeMode" disabled="@Disabled" class="appearance-none border border-gray-300 rounded w-full py-1.5 px-1 text-gray-800 leading-tight focus:outline-none focus:shadow-outline disabled:border-0 bg-white" type="@(IsPassword ? "password" : "text")" placeholder="@Placeholder">
+
+@code {
+
+    ElementReference inputText;
+    private string _inputValue;
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender && Focus)
+            inputText.FocusAsync();
+        base.OnAfterRender(firstRender);
+    }
+
+    private char[] Numbers;
+    private char[] Decimals;
+
+    protected override void OnInitialized()
+    {
+        Numbers = new[] {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+        Decimals = Numbers.Concat(new[] {',', '.'}).ToArray();
+
+        base.OnInitialized();
+    }
+
+    [Parameter]
+    public int MaxLen { get; set; } = Int32.MaxValue;
+
+    private string InputValue
+    {
+        get => _inputValue;
+        set
+        {
+            if(value == _inputValue) return;
+            if(!IsValid(value)) return;
+            _inputValue = value;
+            ValueChanged.InvokeAsync(value);
+        }
+    }
+
+
+    [Parameter]
+    public string Placeholder { get; set; }
+
+    [Parameter]
+    public bool Disabled { get; set; }
+
+    [Parameter]
+    public string Value
+    {
+        set => _inputValue = value;
+    }
+
+    [Parameter]
+    public bool Focus { get; set; }
+
+    [Parameter]
+    public bool IsPassword { get; set; }
+
+    [Parameter]
+    public bool ImmediateChange { get; set; } = true;
+
+    [Parameter]
+    public EventCallback OnPressEnter { get; set; }
+
+    [Parameter]
+    public EventCallback<string> ValueChanged { get; set; }
+
+    private void Enter(KeyboardEventArgs e)
+    {
+        if (e.Code == "Enter" || e.Code == "NumpadEnter")
+            OnPressEnter.InvokeAsync();
+    }
+
+    private string ChangeMode => ImmediateChange ? "oninput" : "onchange";
+
+    private bool IsValid(string value)
+    {
+        if (value == null || value.Length > MaxLen) return false;
+        return Type switch{
+            InputType.Text => true,
+            InputType.Number => value.All(a => Numbers.Contains(a)),
+            InputType.Decimal => value.All(a => Decimals.Contains(a)),
+            _ => true
+            };
+    }
+
+    [Parameter]
+    public Input.InputType Type { get; set; } = InputType.Text;
+
+    public enum InputType
+    {
+        Text = 1,
+        Number = 2,
+        Decimal = 3
+    }
+}
